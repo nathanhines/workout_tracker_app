@@ -21,7 +21,7 @@ def show_home():
         st.title("LiftLog")
 
     with col2:
-        if st.button("Log a workout", type="primary"):
+        if st.button("Log a workout", type="primary", use_container_width=True):
             st.session_state.page = "form"
             st.rerun()
 
