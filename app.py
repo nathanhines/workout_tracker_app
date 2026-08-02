@@ -25,7 +25,40 @@ def show_home():
             st.session_state.page = "form"
             st.rerun()
 
-    st.write("Hello, lifter!")
+    st.divider()
+
+    df = load_log()
+
+    if not df.empty:
+       
+        # Date filter section
+        st.subheader("Filter by Date")
+        col1, col2 = st.columns(2)
+
+        # Get min and max dates from the data
+        min_date = df['date'].min().date()
+        max_date = df['date'].max().date()
+
+        with col1:
+            from_date = st.date_input("From", value=min_date, min_value=min_date, max_value=max_date)
+
+        with col2:
+            to_date = st.date_input("To", value=max_date, min_value=min_date, max_value=max_date)
+
+        # Filter the dataframe
+        filtered_df = df[
+            (df['date'].dt.date >= from_date) &
+            (df['date'].dt.date <= to_date)
+        ]
+
+        
+
+        if not filtered_df.empty:
+            st.dataframe(filtered_df, hide_index=True, width='stretch')
+        else:
+            st.warning("No workouts found in the selected date range.")
+    else:
+        st.info("No workouts logged yet.")
 
 
 def show_form():
