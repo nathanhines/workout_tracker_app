@@ -9,10 +9,10 @@ LiftLog is a personal strength-training tracker. Log each workout—exercises, r
 
 ## Setup
 
-1. Clone this repository and open a terminal in the project folder.
+1. Clone this repository and open in IDE (VS Code) .
 
 
-2. Install dependencies:
+2. Install dependencies by opening terminal in the project folder and running below:
 
    ```bash
    pip install -r requirements.txt
@@ -36,25 +36,25 @@ Your browser should open the LiftLog home page. This is the main entry point for
 
 On the home page you see your logged workouts. Use **From** / **To** to filter by date. Click **Log a workout** when you are ready to add a new session.
 
-*(Replace this placeholder with a screenshot of the home page.)*
+<img width="1334" height="680" alt="home" src="https://github.com/user-attachments/assets/cf6f6659-86d4-4f8d-9fcd-a4568cc38962" />
 
 ### 2. Add a workout
 
 Choose the date, pick an exercise from the list, enter reps and weight (lbs), and add optional notes.
 
-*(Replace this placeholder with a screenshot of the logging form.)*
+<img width="1345" height="758" alt="add_workout_form" src="https://github.com/user-attachments/assets/c9fcc739-c76c-48da-a618-c9711328afbf" />
 
 ### 3. Build a draft, then save
 
 Click **Add set** for each set. Sets for the same exercise group together in the draft table. When the draft looks right, click **Save workout**. You return to home and the new rows appear in the history.
 
-*(Replace this placeholder with a screenshot of the draft workout table.)*
+<img width="1333" height="831" alt="draft" src="https://github.com/user-attachments/assets/20b8af75-aee5-41f4-9433-80a25cfa8c3a" />
 
 ## Optional: progress charts
 
 To plot weight history for an exercise:
 
-1. Open [`data-vis.ipynb`](data-vis.ipynb) in Jupyter or VS Code / Cursor.
+1. Open [`data-vis.ipynb`](data-vis.ipynb) in Jupyter or VS Code
 2. Run all cells (requires `plotly`, which is listed in `requirements.txt`).
 
 Charts live in the notebook, not in the Streamlit UI.
