@@ -1,3 +1,11 @@
+"""Static exercise catalog for LiftLog.
+
+`exercise_library` is a list of exercise dicts. The Streamlit UI currently
+uses only the `name` field for the exercise selectbox. The other fields
+(category, movement_pattern, equipment, muscle_group) are metadata kept for
+future filtering or analysis features.
+"""
+
 exercise_library = [
     {"name": "Back Squat", "category": "Strength",
      "movement_pattern": "Squat", "equipment": "Barbell",

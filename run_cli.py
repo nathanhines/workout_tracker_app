@@ -1,4 +1,8 @@
+"""Developer seed/demo script for LiftLog (not the main user-facing app).
 
+Hardcodes a sample workout, appends it to the CSV via liftlog helpers, and
+prints the updated log. Prefer `streamlit run app.py` for normal use.
+"""
 
 from liftlog import empty_log, log_workout, save_log, load_log
 from exercises import exercise_library
@@ -6,6 +10,7 @@ import os
 
 
 def main():
+    """Load the CSV, append a hardcoded sample workout, save, and print the result."""
  
     workout_log = load_log()
 

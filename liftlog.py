@@ -1,3 +1,14 @@
+"""CSV-backed workout log for LiftLog.
+
+Provides the shared schema and helpers used by the Streamlit app, CLI seed
+script, and data-vis notebook.
+
+Schema columns: date, exercise_name, set_number, reps, weight, notes.
+
+log_exercise / log_workout build set rows and return a new DataFrame;
+save_log / load_log handle CSV I/O.
+"""
+
 import pandas as pd
 
 
@@ -53,6 +64,7 @@ def log_workout(df, date, exercises):
     Collects every set-dict into one batch, then concats onto dataframe in one go.
     Returns the new, larger dataframe (does not modify df in place).
     """
+    # GOTCHA: always appends to the dataframe, logging the same date again creates duplicate rows.
     new_workout = [] #empty list to store new workout rows
     for exercise_name, sets in exercises: #iterate over the list of exercises and sets
         new_workout.extend(log_exercise(date, exercise_name, sets)) #add the rows to the new workout list
@@ -71,4 +83,5 @@ def save_log(df, path="workout_log.csv"):
 def load_log(path="workout_log.csv"):
     """Read the log CSV back into a typed frame.
     parse_dates rebuilds the datetime type (fixing the logging-time drift)."""
+    # GOTCHA: path must already exist or read_csv raises FileNotFoundError.
     return pd.read_csv(path, parse_dates=["date"]) #read the csv file back into a dataframe and parse the date column to a datetime object

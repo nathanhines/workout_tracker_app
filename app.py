@@ -1,3 +1,12 @@
+"""Streamlit UI for LiftLog.
+
+Pages are switched via `st.session_state.page` ("home" or "form").
+An in-progress workout is held in `st.session_state.draft` as a list of
+(exercise_name, [(reps, weight, notes), ...]) pairs until the user saves.
+
+Run with: streamlit run app.py
+"""
+
 from datetime import datetime
 
 import streamlit as st
@@ -7,6 +16,7 @@ from liftlog import load_log, log_workout, save_log
 
 # to run "streamlit run app.py" in the terminal
 
+# --- session state ---
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -15,6 +25,8 @@ if "draft" not in st.session_state:
 
 
 def show_home():
+    """Home page: title, navigation to the form, and date-filtered workout history."""
+    # --- header ---
     col1, col2 = st.columns([3, 1], vertical_alignment="center")
 
     with col1:
@@ -23,7 +35,7 @@ def show_home():
     with col2:
         if st.button("Log a workout", type="primary", use_container_width=True):
             st.session_state.page = "form"
-            st.rerun()
+            st.rerun()  # refresh UI after navigation state change
 
     st.divider()
 
@@ -53,6 +65,7 @@ def show_home():
 
         
 
+        # --- history table ---
         if not filtered_df.empty:
             st.dataframe(filtered_df, hide_index=True, width='stretch')
         else:
@@ -62,13 +75,16 @@ def show_home():
 
 
 def show_form():
+    """Form page: collect sets into a draft workout, then append and save to CSV."""
+    # --- navigation ---
     if st.button("← Back"):
         st.session_state.draft = []
         st.session_state.page = "home"
-        st.rerun()
+        st.rerun()  # refresh UI after navigation state change
 
     st.title("Add workout")
 
+    # --- set inputs ---
     date = st.date_input("Date")
     exercise_names = [e["name"] for e in exercise_library]
     exercise = st.selectbox("Exercise", exercise_names)
@@ -89,8 +105,9 @@ def show_form():
             # different exercise → start a new (name, [set]) pair
             draft.append((exercise, [new_set]))
 
-        st.rerun()
+        st.rerun()  # refresh UI so the draft table updates
 
+    # --- draft display & save ---
     if st.session_state.draft:
         st.subheader("Draft workout")
         rows = []
@@ -112,11 +129,12 @@ def show_form():
             save_log(df)
             st.session_state.draft = []
             st.session_state.page = "home"
-            st.rerun()
+            st.rerun()  # refresh UI after save and return home
     else:
         st.caption("No sets added yet.")
 
 
+# --- page router ---
 if st.session_state.page == "home":
     show_home()
 elif st.session_state.page == "form":
